@@ -1,118 +1,165 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import React, {StrictMode} from 'react';
 import {
+  Pressable,
   SafeAreaView,
   ScrollView,
   StatusBar,
-  StyleSheet,
   Text,
-  useColorScheme,
   View,
 } from 'react-native';
+import 'react-native-gesture-handler';
+// Create a LoginContext with a default value
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+const Stack = createStackNavigator();
+const FirstStack = createStackNavigator();
+const SecondStack = createStackNavigator();
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const DetailsScreenONE = ({navigation}) => {
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Details Screen ONE</Text>
+      <Pressable
+        onPress={() => navigation.navigate('HomeOne')}
+        style={{
+          backgroundColor: 'black',
+          padding: 10,
+          borderRadius: 5,
+        }}>
+        <Text style={{color: 'white'}}>GO TO HOME ONE, SAME STACK</Text>
+      </Pressable>
+      <Pressable
+        onPress={() => navigation.navigate('StackTwo', {screen: 'HomeTwo'})}
+        style={{
+          backgroundColor: 'black',
+          padding: 10,
+          borderRadius: 5,
+        }}>
+        <Text style={{color: 'white'}}>GO TO HOME TWO, OTHER STACK</Text>
+      </Pressable>
     </View>
   );
-}
+};
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
+const DetailsScreenTWO = ({navigation}) => {
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+      <Text>Details Screen TWO</Text>
+      <Pressable
+        onPress={() => navigation.navigate('HomeTwo')}
+        style={{
+          backgroundColor: 'black',
+          padding: 10,
+          borderRadius: 5,
+        }}>
+        <Text style={{color: 'white'}}>
+          GO TO HOME TWO, SAME STACK - THIS WILL NOT WORK
+        </Text>
+      </Pressable>
+      <Pressable
+        onPress={() => navigation.navigate('StackOne', {screen: 'HomeOne'})}
+        style={{
+          backgroundColor: 'black',
+          padding: 10,
+          borderRadius: 5,
+        }}>
+        <Text style={{color: 'white'}}>GO TO HOME ONE, OTHER STACK</Text>
+      </Pressable>
+    </View>
+  );
+};
+
+const HomeScreenONE = ({navigation}) => {
+  return (
+    <SafeAreaView>
+      <ScrollView contentInsetAdjustmentBehavior="automatic">
+        <Text>HOME SCREEN ONE </Text>
+        <Pressable
+          onPress={() => navigation.navigate('DetailsOne')}
           style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+            backgroundColor: 'black',
+            padding: 10,
+            borderRadius: 5,
           }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
+          <Text style={{color: 'white'}}>GO TO DETAILS ONE, SAME STACK</Text>
+        </Pressable>
+        <Pressable
+          onPress={() =>
+            navigation.navigate('StackTwo', {screen: 'DetailsTwo'})
+          }
+          style={{
+            backgroundColor: 'black',
+            padding: 10,
+            borderRadius: 5,
+          }}>
+          <Text style={{color: 'white'}}>GO TO DETAILS TWO, OTHER STACK</Text>
+        </Pressable>
       </ScrollView>
     </SafeAreaView>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
+const HomeScreenTWO = ({navigation}) => {
+  return (
+    <SafeAreaView>
+      <StatusBar barStyle={'light-content'} />
+      <ScrollView contentInsetAdjustmentBehavior="automatic">
+        <Text>HOME SCREEN TWO</Text>
+        <Pressable
+          onPress={() => navigation.navigate('DetailsTwo')}
+          style={{
+            backgroundColor: 'black',
+            padding: 10,
+            borderRadius: 5,
+          }}>
+          <Text style={{color: 'white'}}>GO TO DETAILS TWO, SAME STACK</Text>
+        </Pressable>
+        <Pressable
+          onPress={() =>
+            navigation.navigate('StackOne', {screen: 'DetailsOne'})
+          }
+          style={{
+            backgroundColor: 'black',
+            padding: 10,
+            borderRadius: 5,
+          }}>
+          <Text style={{color: 'white'}}>GO TO DETAILS ONE, OTHER STACK</Text>
+        </Pressable>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+
+const StackOneNavigator = () => {
+  return (
+    <FirstStack.Navigator>
+      <FirstStack.Screen name="HomeOne" component={HomeScreenONE} />
+      <FirstStack.Screen name="DetailsOne" component={DetailsScreenONE} />
+    </FirstStack.Navigator>
+  );
+};
+
+const StackTwoNavigator = () => {
+  return (
+    <SecondStack.Navigator>
+      <SecondStack.Screen name="HomeTwo" component={HomeScreenTWO} />
+      <SecondStack.Screen name="DetailsTwo" component={DetailsScreenTWO} />
+    </SecondStack.Navigator>
+  );
+};
+
+function App(): React.JSX.Element {
+  return (
+    <StrictMode>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="StackOne" component={StackOneNavigator} />
+          <Stack.Screen name="StackTwo" component={StackTwoNavigator} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </StrictMode>
+  );
+}
 
 export default App;
